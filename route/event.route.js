@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-createEvent, getEventById, getEvent
+createEvent, getEventById, getEvent, updateEvent
 } = require("../controller/Event.controller");
 
 //@route  POST api/ticket
@@ -23,6 +23,6 @@ router.get("/", getEvent);
 
 // //@route  PUT api/ticket
 // //@desc   update ticket record
-// router.put("/:id", updateTicket);
+router.put("/:id", updateEvent);
 
 module.exports = router;

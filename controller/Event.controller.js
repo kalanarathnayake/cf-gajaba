@@ -1,6 +1,6 @@
 const Event = require('../model/Event.model');
 
-//Create new ticket 
+//Create new Event 
 const createEvent = async (req, res) => {
     //catching data from front end to these attributes
     const { eventId, eventName, scoreFor1, scoreFor2, scoreFor3} = req.body;
@@ -20,7 +20,7 @@ const createEvent = async (req, res) => {
         .catch(err => res.status(400).json('Error : ' + err));
 };
 
-//get player info by id
+//get Event info by id
 const getEventById = async (req, res) => {
     try {
         const event = await Event.findById(req.params.id);
@@ -34,8 +34,7 @@ const getEventById = async (req, res) => {
     }
 };
 
-
-//get all ticket records
+//get all Event records
 const getEvent = async (req, res) => {
     try {
         const event = await Event.find();
@@ -45,14 +44,21 @@ const getEvent = async (req, res) => {
     }
 }
 
-// firstName: { type: String, required: true },
-// lastName: { type: String, required: true },
-// EPF: { type: String, required: true },
-// house: { type: String, required: true },
-// branch: { type: String, required: false },
-// phoneNumber: { type: String, required: false },
-// event: { type: String, required: true }
-
+//Update Exsisting Event record
+const updateEvent = async (req, res) => {
+    Event.findByIdAndUpdate(req.params.id).
+        then((exsistingEvent) => {
+            exsistingEvent.eventId = req.body.eventId;
+            exsistingEvent.eventName = req.body.eventName;
+            exsistingEvent.scoreFor1 = req.body.scoreFor1;
+            exsistingEvent.scoreFor2 = req.body.scoreFor2;
+            exsistingEvent.scoreFor3 = req.body.scoreFor3;
+            exsistingEvent.save()
+                .then((updatedEvent) => res.json(updatedEvent))
+                .catch((error) => res.status(400).json("Error: " + error));
+        })
+        .catch((error) => res.status(400).json("Error: 1" + error));
+};
 
 //export created functions 
 module.exports = {
@@ -60,5 +66,5 @@ module.exports = {
     // deleteTicket,
     getEventById,
     getEvent,
-    // updateTicket
+    updateEvent
 };

@@ -1,6 +1,6 @@
 const Players = require('../model/Player.model');
 
-//Create new ticket 
+//Create new Player 
 const createPlayer = async (req, res) => {
     //catching data from front end to these attributes
     const { firstName, lastName, EPF, house, branch, phoneNumber, event } = req.body;
@@ -16,7 +16,7 @@ const createPlayer = async (req, res) => {
         event
     });
 
-    //sending created ticket object to the database 
+    //sending created Player object to the database 
     await player.save()
         .then(() => res.json('Player Registered'))
         .catch(err => res.status(400).json('Error : ' + err));
@@ -37,7 +37,7 @@ const getPlayerById = async (req, res) => {
 };
 
 
-//get all ticket records
+//get all Player records
 const getPlayers = async (req, res) => {
     try {
         const players = await Players.find();
@@ -46,6 +46,24 @@ const getPlayers = async (req, res) => {
         res.status(500).send("Server Error : " + error);
     }
 }
+
+//Update Exsisting Player record
+const updatePlayer = async (req, res) => {
+    Players.findByIdAndUpdate(req.params.id).
+        then((exsistingPlayer) => {
+            exsistingPlayer.firstName = req.body.firstName;
+            exsistingPlayer.lastName = req.body.lastName;
+            exsistingPlayer.EPF = req.body.EPF;
+            exsistingPlayer.house = req.body.house;
+            exsistingPlayer.branch = req.body.branch;
+            exsistingPlayer.phoneNumber = req.body.phoneNumber;
+            exsistingPlayer.event = req.body.event;
+            exsistingPlayer.save()
+                .then((updatedPlayer) => res.json(updatedPlayer))
+                .catch((error) => res.status(400).json("Error: " + error));
+        })
+        .catch((error) => res.status(400).json("Error: 1" + error));
+};
 
 // firstName: { type: String, required: true },
 // lastName: { type: String, required: true },
@@ -62,5 +80,5 @@ module.exports = {
     // deleteTicket,
     getPlayerById,
     getPlayers,
-    // updateTicket
+    updatePlayer
 };
