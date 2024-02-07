@@ -8,7 +8,7 @@ mongoose.set('strictQuery', false);
 const port = process.env.PORT || 5000
 
 app.get('/', (req, res) => {
-  res.send('ITP Backend API Running');
+  res.send('Gajaba Project Backend API Is Running Successfuly');
 })
 
 connectMongoDB().then(()=>console.log("MongoDB connected")).catch(err => console.log(err));
